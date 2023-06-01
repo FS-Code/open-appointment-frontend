@@ -40,9 +40,9 @@ export const AuthProvider: (props: {children: JSX.Element}) => JSX.Element = ({c
 }
 
 const RequireAuth: (props: {children: JSX.Element}) => JSX.Element = ({children}) => {
-    const auth = true
+    const auth = useAuth()
 
-    if ( ! auth ) {
+    if ( ! auth.user ) {
         return <Navigate to={"/login"} replace={true}/>
     }
 
@@ -50,10 +50,10 @@ const RequireAuth: (props: {children: JSX.Element}) => JSX.Element = ({children}
 }
 
 const RequireNotAuth: (props: {children: JSX.Element}) => JSX.Element = ({children}) => {
-    const auth = true
+    const auth = useAuth()
 
-    if ( ! auth ) {
-        return <Navigate to={"/login"} replace={true}/>
+    if ( !! auth.user ) {
+        return <Navigate to={"/"} replace={true}/>
     }
 
     return children
