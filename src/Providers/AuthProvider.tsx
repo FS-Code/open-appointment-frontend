@@ -25,12 +25,12 @@ export const AuthProvider: (props: {children: JSX.Element}) => JSX.Element = ({c
     const [user, setUser] = useState<UserInterface>();
 
     useEffect(() => {
-        setUser((prev: UserInterface | undefined): UserInterface => {
-            return {
-                id: UserPlaceholder.id,
-                email: UserPlaceholder.email,
-            }
-        })
+        // setUser((prev: UserInterface | undefined): UserInterface => {
+        //     return {
+        //         id: UserPlaceholder.id,
+        //         email: UserPlaceholder.email,
+        //     }
+        // })
     }, [])
 
     return <AuthContext.Provider value={{
