@@ -10,7 +10,7 @@ import {useAuth} from "../Providers/AuthProvider";
 const Login = () => {
     const navigate = useNavigate()
     const alert = useAlert()
-    const {setUser} = useAuth()
+    const {setUser, reload} = useAuth()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -29,9 +29,13 @@ const Login = () => {
             .then(data => {
                 setUser(data.user)
 
+                // navigate("/appointments", {replace: true})
+
+                reload()
+
                 alert.success("Success", "You have logged in!")
             })
-            .catch(e => alert.danger("Oops!", e.message))
+            .catch(e => alert.danger("Oops!", e.response.data.data.error))
     }
 
     const onShowPassword = () => {

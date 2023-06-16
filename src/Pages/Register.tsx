@@ -3,8 +3,12 @@ import {useNavigate} from "react-router-dom";
 import Button from "../Components/Form/Button";
 import {IconEye} from "@tabler/icons-react";
 import {useAlert} from "../Providers/AlertPresenter";
+import axios from "axios";
+import {API_URL} from "../App";
+import {useAuth} from "../Providers/AuthProvider";
 
 const Register = () => {
+    const {setUser, reload} = useAuth()
     const navigate = useNavigate()
     const alert = useAlert()
 
@@ -13,10 +17,26 @@ const Register = () => {
     const [passwordRepeat, setPasswordRepeat] = useState("")
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
-    const onLogin = () => {
-        // on login
+    const onRegister = () => {
+        if (password !== passwordRepeat) return alert.danger("Oops!", "Password and its repeat does not match each other!")
 
-        alert.success("Success", "You have logged in!")
+        axios.post( API_URL + "/register", {
+            email,
+            password
+        }, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        } )
+            .then(r => r.data)
+            .then(data => {
+                setUser(data.user)
+
+                reload();
+
+                alert.success("Success", "You have created an account!")
+            })
+            .catch(e => alert.danger("Oops!", e.response.data.data.error))
     }
 
     const onShowPassword = () => {
@@ -28,7 +48,7 @@ const Register = () => {
             <div className="container container-tight py-4">
                 <div className="card card-md">
                     <div className="card-body">
-                        <h2 className="h2 text-center mb-4">Login to Open Appointment</h2>
+                        <h2 className="h2 text-center mb-4">Register to Open Appointment</h2>
                         <div>
                             <div className="mb-3">
                                 <label className="form-label">Email address</label>
@@ -61,7 +81,7 @@ const Register = () => {
                                 </div>
                             </div>
                             <div className="form-footer">
-                                <Button className={"btn btn-primary w-100"} onClick={onLogin}>Sign in</Button>
+                                <Button className={"btn btn-primary w-100"} onClick={onRegister}>Create an Account</Button>
                             </div>
                         </div>
                     </div>

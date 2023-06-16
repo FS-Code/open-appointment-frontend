@@ -10,12 +10,14 @@ interface UserInterface {
 
 interface AuthInterface {
     user: UserInterface | undefined,
-    setUser: Function
+    setUser: Function,
+    reload: Function
 }
 
 const AuthContext = React.createContext<AuthInterface>({
     user: undefined,
-    setUser: () => {}
+    setUser: () => {},
+    reload: () => {}
 });
 
 export const useAuth: () => AuthInterface = () => {
@@ -25,16 +27,21 @@ export const useAuth: () => AuthInterface = () => {
 export const AuthProvider: (props: {children: JSX.Element}) => JSX.Element = ({children}) => {
     const [user, setUser] = useState<UserInterface>();
 
-    useEffect(() => {
+    const reload = () => {
         axios.post(API_URL + "/me")
             .then(r => r.data)
             .then(data => setUser(data.data.user))
             .catch()
+    }
+
+    useEffect(() => {
+        reload()
     }, [])
 
     return <AuthContext.Provider value={{
         user,
         setUser,
+        reload,
     }}>{children}</AuthContext.Provider>
 }
 
