@@ -3,19 +3,35 @@ import {useNavigate} from "react-router-dom";
 import Button from "../Components/Form/Button";
 import {IconEye} from "@tabler/icons-react";
 import {useAlert} from "../Providers/AlertPresenter";
+import axios from "axios";
+import {API_URL} from "../App";
+import {useAuth} from "../Providers/AuthProvider";
 
 const Login = () => {
     const navigate = useNavigate()
     const alert = useAlert()
+    const {setUser} = useAuth()
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [isPasswordVisible, setIsPasswordVisible] = useState(false)
 
     const onLogin = () => {
-        // on login
+        axios.post( API_URL + "/login", {
+            email,
+            password
+        }, {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        } )
+            .then(r => r.data)
+            .then(data => {
+                setUser(data.user)
 
-        alert.success("Success", "You have logged in!")
+                alert.success("Success", "You have logged in!")
+            })
+            .catch(e => alert.danger("Oops!", e.message))
     }
 
     const onShowPassword = () => {

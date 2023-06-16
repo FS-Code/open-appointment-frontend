@@ -12,6 +12,8 @@ import ResetPassword from "./Pages/ResetPassword";
 import {AlertPresenter} from "./Providers/AlertPresenter";
 import {RecoilRoot} from "recoil";
 
+export const API_URL = "https://open-appointment-backend.local.com/api"
+
 const App = () => {
     return <RecoilRoot>
         <AlertPresenter/>

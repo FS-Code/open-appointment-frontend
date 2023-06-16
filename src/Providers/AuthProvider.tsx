@@ -1,6 +1,7 @@
 import React, {JSX, useContext, useEffect, useState} from "react";
 import {Navigate} from "react-router-dom";
-import {UserPlaceholder} from "../placeholders/User";
+import axios from "axios";
+import {API_URL} from "../App";
 
 interface UserInterface {
     id: number,
@@ -25,12 +26,10 @@ export const AuthProvider: (props: {children: JSX.Element}) => JSX.Element = ({c
     const [user, setUser] = useState<UserInterface>();
 
     useEffect(() => {
-        // setUser((prev: UserInterface | undefined): UserInterface => {
-        //     return {
-        //         id: UserPlaceholder.id,
-        //         email: UserPlaceholder.email,
-        //     }
-        // })
+        axios.post(API_URL + "/me")
+            .then(r => r.data)
+            .then(data => setUser(data.data.user))
+            .catch()
     }, [])
 
     return <AuthContext.Provider value={{
@@ -40,9 +39,9 @@ export const AuthProvider: (props: {children: JSX.Element}) => JSX.Element = ({c
 }
 
 const RequireAuth: (props: {children: JSX.Element}) => JSX.Element = ({children}) => {
-    const auth = useAuth()
+    const {user} = useAuth()
 
-    if ( ! auth.user ) {
+    if ( ! user ) {
         return <Navigate to={"/login"} replace={true}/>
     }
 
