@@ -8,10 +8,10 @@ import {AuthProvider, RequireAuth, RequireNotAuth} from "./Providers/AuthProvide
 import NotFound from "./Pages/NotFound";
 import Login from "./Pages/Login";
 import Register from "./Pages/Register";
-import ResetPassword from "./Pages/ResetPassword";
 import {AlertPresenter} from "./Providers/AlertPresenter";
 import {RecoilRoot} from "recoil";
 import {ModalPresenter} from "./Providers/ModalProvider";
+import Book from "./Pages/Book";
 
 export const API_URL = "https://open-appointment-backend.local.com/api"
 
@@ -32,7 +32,7 @@ const App = () => {
                     <Route path={"/"} element={<RequireNotAuth><Outlet/></RequireNotAuth>}>
                         <Route path={"login"} element={<Login/>}/>
                         <Route path={"register"} element={<Register/>}/>
-                        <Route path={"reset-password"} element={<ResetPassword/>}/>
+                        <Route path={"book/:slug"} element={<Book/>}/>
                     </Route>
                 </Routes>
             </BrowserRouter>
