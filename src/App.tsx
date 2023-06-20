@@ -11,12 +11,14 @@ import Register from "./Pages/Register";
 import ResetPassword from "./Pages/ResetPassword";
 import {AlertPresenter} from "./Providers/AlertPresenter";
 import {RecoilRoot} from "recoil";
+import {ModalPresenter} from "./Providers/ModalProvider";
 
 export const API_URL = "https://open-appointment-backend.local.com/api"
 
 const App = () => {
     return <RecoilRoot>
         <AlertPresenter/>
+        <ModalPresenter/>
         <AuthProvider>
             <BrowserRouter>
                 <Routes>

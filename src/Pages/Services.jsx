@@ -1,22 +1,67 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import PageHeader from "../Components/Dashboard/PageHeader";
-import {IconPlus} from "@tabler/icons-react";
+import {IconPlus, IconTrash} from "@tabler/icons-react";
 import {Table, TableRow} from "../Components/Table";
 import {ServicesPlaceholder} from "../placeholders/Services";
+import {useModal} from "../Providers/ModalProvider";
+import {Modal} from "../Components/Modal";
+import Button from "../Components/Form/Button";
+
+const NewServiceModal = ({onClose}) => {
+    const [name, setName] = useState("")
+
+    const onAdd = () => {
+        // add service
+    }
+
+    return <Modal
+        title={"New Service"}
+        body={<>
+            <div className="mb-3">
+                <label className="form-label">Name</label>
+                <input type="text" className="form-control" onChange={e => setName(e.target.value)} />
+            </div>
+        </>}
+        confirmBtnText={"Add"}
+        onConfirm={onAdd}
+        onClose={onClose}/>
+}
 
 const Services = () => {
+    const modal = useModal()
     const rows = ServicesPlaceholder
+    const [services, setServices] = useState([])
 
-    const onDelete = (id: number) => {
-        alert(`Deleted ID: ${id}`)
+    const onNewService = () => {
+        modal.show(NewServiceModal, {
+
+        })
     }
+
+    const onDelete = (id) => {
+        modal.confirm(
+            <IconTrash/>,
+            "Are you sure you want to delete service?",
+            "Yes, Delete",
+            () => {
+
+            },
+            () => {}
+        )
+    }
+
+    useEffect(() => {
+        return setServices(ServicesPlaceholder);
+    }, [])
 
     return <>
         <PageHeader title={"Services"} btnList={<>
-            <a href="#" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-report">
-                <IconPlus className={"icon"}/>
-                <span className={"d-none d-sm-inline-block"}>Create new report</span>
-            </a>
+            <Button className="btn btn-primary" onClick={onNewService}>
+                <>
+                    <IconPlus className={"icon"}/>
+                    <span className={"d-none d-sm-inline-block"}>Create new service</span>
+                </>
+            </Button>
         </>}/>
 
         <div className="page-body">
